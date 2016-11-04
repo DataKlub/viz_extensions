@@ -1,0 +1,49 @@
+
+# Application-level permissions
+
+[]
+access = read : [ * ], write : [ admin, power ]
+
+### EVENT TYPES
+
+[eventtypes]
+export = system
+
+
+### PROPS
+
+[props]
+export = system
+
+
+### TRANSFORMS
+
+[transforms]
+export = system
+
+
+### LOOKUPS
+
+[lookups]
+export = system
+
+
+### VIEWSTATES: even normal users should be able to create shared viewstates
+
+[viewstates]
+access = read : [ * ], write : [ * ]
+export = system
+
+### Visualizations
+
+# Un-comment the stanza below to make the standin visualization available to all apps.
+ [visualizations/viz1]
+ export = system
+
+ [views/exemple]
+version = 6.5.0
+modtime = 1477932744.942585000
+
+[views/table_viz]
+version = 6.5.0
+modtime = 1477952907.219016000

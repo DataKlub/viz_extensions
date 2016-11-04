@@ -1,0 +1,4 @@
+<nav search_view="search" color="#3399FF">
+  <view name="exemple" default="true" />
+
+</nav>

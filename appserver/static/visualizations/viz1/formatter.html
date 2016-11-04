@@ -1,0 +1,71 @@
+<form class="splunk-formatter-section" section-label="General">
+  <splunk-control-group label="Show Last Row">
+        <splunk-radio-input name="{{VIZ_NAMESPACE}}.show_total" value="1">
+            <option value="1">True</option>
+            <option value="0">False</option>
+        </splunk-radio-input>
+      </splunk-control-group>
+
+<splunk-control-group label=" Scale(0.5 -1.5)">
+    <splunk-text-input name="{{VIZ_NAMESPACE}}.scale" value="1.0"></splunk-text-input>
+      </splunk-control-group>
+   <splunk-control-group label=" Square Size">
+        <splunk-select name="{{VIZ_NAMESPACE}}.case_size" value="80">
+            <option value="60">60</option>
+            <option value="80">80</option>
+            <option value="100">100</option>
+            <option value="120">120</option>
+            <option value="140">140</option>
+
+        </splunk-select>
+    </splunk-control-group>
+    <splunk-control-group label=" Font Size">
+        <splunk-select name="{{VIZ_NAMESPACE}}.case_font_size" value="34">
+            <option value="30">30</option>
+            <option value="32">32</option>
+            <option value="34">34</option>
+            <option value="36">36</option>
+            <option value="38">38</option>
+        </splunk-select>
+    </splunk-control-group>
+</form>
+
+<form class="splunk-formatter-section" section-label=" Colors">
+
+    <!--splunk-control-group label="Fond Color">
+        <splunk-color-picker name="{{VIZ_NAMESPACE}}.fondColor" value="#DED9D9" type="splunkSequential">
+        </splunk-color-picker >
+       </splunk-control-group-->
+    <splunk-control-group label=" Row1 Color">
+          <splunk-color-picker name="{{VIZ_NAMESPACE}}.Color1" value="#FFCCCC" type="splunkSequential">
+        </splunk-color-picker >
+    </splunk-control-group>
+     <splunk-control-group label=" Row2 Color">
+          <splunk-color-picker name="{{VIZ_NAMESPACE}}.Color2" value="#DED9D9" type="splunkSequential">
+        </splunk-color-picker >
+    </splunk-control-group>
+     <splunk-control-group label=" Row3 Color">
+          <splunk-color-picker name="{{VIZ_NAMESPACE}}.Color3" value="#B2AFAF" type="splunkSequential">
+        </splunk-color-picker >
+    </splunk-control-group>
+     <splunk-control-group label=" Row4 Color">
+          <splunk-color-picker name="{{VIZ_NAMESPACE}}.Color4" value="#7C7A7A" type="splunkSequential">
+        </splunk-color-picker >
+    </splunk-control-group>
+     <splunk-control-group label=" Row5 Color">
+          <splunk-color-picker name="{{VIZ_NAMESPACE}}.Color5" value="#000000" type="splunkSequential">
+        </splunk-color-picker >
+    </splunk-control-group>
+</form>
+
+<form class="splunk-formatter-section" section-label="X-Axis">
+	<splunk-control-group label=" X Title">
+		<splunk-text-input name="{{VIZ_NAMESPACE}}.x_title" value="X Title"></splunk-text-input>
+    	</splunk-control-group>
+</form>
+
+<form class="splunk-formatter-section" section-label="Y-Axis">
+	<splunk-control-group label=" Y Title">
+		<splunk-text-input name="{{VIZ_NAMESPACE}}.y_title" value="Y Title"></splunk-text-input>
+    	</splunk-control-group>
+</form>

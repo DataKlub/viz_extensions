@@ -1,0 +1,10 @@
+[
+
+    {
+        "id": "exemple",
+        "title": "Custom Table Visualizations",
+        "short-description": "Create a complex table Visualizations.",
+        "category": "Custom Visualizations",
+        "versions": ["6.5"]
+    }
+]
