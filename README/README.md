@@ -33,3 +33,11 @@ Recommendations
 
 It is recommend that this be installed on an Search head.
 
+
+Bug Report/ Feature Request
+-----------
+
+[viz_extensions] 
+
+[viz_extensions]:https://github.com/DataKlub/viz_extensions
+
