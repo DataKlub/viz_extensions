@@ -37,13 +37,10 @@ export = system
 ### Visualizations
 
 # Un-comment the stanza below to make the standin visualization available to all apps.
- [visualizations/viz1]
- export = system
+[visualizations/viz1]
+export = system
 
- [views/exemple]
+[views/exemple]
 version = 6.5.0
 modtime = 1477932744.942585000
 
-[views/table_viz]
-version = 6.5.0
-modtime = 1477952907.219016000

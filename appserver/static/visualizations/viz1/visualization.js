@@ -214,7 +214,7 @@ define(["api/SplunkVisualizationBase","api/SplunkVisualizationUtils"], function(
 	                        xValues = xLabels //_.uniq(xValues);
 	                        if(xValues.length < 3 || yValues.length < 2){
 	                            throw new SplunkVisualizationBase.VisualizationError(
-	                                'No data found. Please check if these are fields named "columns" et "rows" and "count" in splunk outputs.'
+	                                'No data found. Please check if these are fields named "columns","rows" and "count" in splunk outputs.'
 	                            );
 	                        }
 	                        var metadata = {xValues: xValues};
@@ -430,7 +430,7 @@ define(["api/SplunkVisualizationBase","api/SplunkVisualizationUtils"], function(
 	                                                .data(row['counts'])
 	                                                .enter()
 	                                                .append('rect')
-	                                                .attr("class", function(d) { return d[0]; });
+	                                                .attr("class", function(d) { return String(d[0]).replace(/\s+/g,'_'); });
 
 
 	                                    // Add text
@@ -446,8 +446,8 @@ define(["api/SplunkVisualizationBase","api/SplunkVisualizationUtils"], function(
 	                                                .attr('class2', function(d) { return d[0]+'_value'; })
 	                                                .attr('class', function(d, i) {
 	                                                        if ( list_sub.indexOf(d[0])> -1)  
-	                                                                return "sub-" + cols_inverse[d[0]] ;
-	                                                        return d[0];})
+	                                                                return "sub-" + String(cols_inverse[d[0]]).replace(/\s+/g,'_') ;
+	                                                        return String(d[0]).replace(/\s+/g,'_');})
 	                                                .attr('col_index', function(d) {return xValues.indexOf(d[0]);})
 	                                                .attr("col", function(d){return d[0]})
 	                                                .text(roundToThousands)
@@ -488,8 +488,8 @@ define(["api/SplunkVisualizationBase","api/SplunkVisualizationUtils"], function(
 	                                        .attr("col", function(d){return d[0]})
 	                                        .attr('class', function(d, i) {
 	                                                if ( list_sub.indexOf(d[0])> -1)  
-	                                                        return "sub-" + cols_inverse[d[0]] ;
-	                                                return d[0];})
+	                                                        return "sub-" + String(cols_inverse[d[0]]).replace(/\s+/g,'_') ;
+	                                                return String(d[0]).replace(/\s+/g,'_');})
 	                                        .attr('rect_name',function(d) { return String(d[0]+j).replace(/\s+/g,'_'); })
 	                                        .style('fill', cos_color[j]||"#7C7A7A") 
 	                                        .style("opacity", function(d) {var newOpacity   = list_sub.indexOf(d[0])> -1 ? 0.2 : 1; return newOpacity;})   
@@ -608,7 +608,7 @@ define(["api/SplunkVisualizationBase","api/SplunkVisualizationUtils"], function(
 
 	                                                })
 	                                                .attr('col_index', function(d) {return xValues.indexOf(d);})
-	                                                .attr('class', function(d, i) {return "sub-" + d;})
+	                                                .attr('class', function(d, i) {return "sub-" + String(d).replace(/\s+/g,'_');})
 	                                                .attr('height', function () { if ( j == last_row ) return RECT_HEIGHT_XL ; return RECT_HEIGHT_L; })
 	                                                .style("fill",'#FFF')
 	                                                .attr("class2","dash")
@@ -669,17 +669,17 @@ define(["api/SplunkVisualizationBase","api/SplunkVisualizationUtils"], function(
 	                        
 	                        function click(p){
 	                                    var element = d3.select(this)
-	                                    var tmp_col  = element.attr("class");
+	                                    var tmp_col  = element.attr("class").replace(/_/g,' ');;
 	                                    if (tmp_col.indexOf("sub-") > -1)  return ;
 	                                    if (cols[tmp_col]["sub"].length == 0) return ;
 	                                    var last_sub_col = cols[tmp_col]["sub"][cols[tmp_col]["sub"].length - 1 ]
 	                                    var DIFF = xScale(last_sub_col) - xScale(tmp_col);
 	                                    var index_X = xValues.indexOf(last_sub_col) ; 
 	                                    var active = element.attr("active") ;
-	                                    var  sub_cols=  ".sub-" + tmp_col;
+	                                    var  sub_cols=  ".sub-"  + String(tmp_col).replace(/\s+/g,'_');
 
 	                                    if (active == 1) {
-	                                                d3.selectAll("." + tmp_col).attr("active",0);
+	                                                d3.selectAll("." + String(tmp_col).replace(/\s+/g,'_')).attr("active",0);
 	                                                
 	                                                d3.selectAll(sub_cols).style("visibility","hidden")
 
@@ -706,7 +706,7 @@ define(["api/SplunkVisualizationBase","api/SplunkVisualizationUtils"], function(
 	                                    else{
 	                                                
 	                                                d3.selectAll(sub_cols).style("visibility","visible")
-	                                                d3.selectAll("." + tmp_col).attr("active",1);
+	                                                d3.selectAll("." + String(tmp_col).replace(/\s+/g,'_')).attr("active",1);
 	                                                
 	                                                for ( var i =  index_X + 1 ; i < xValues.length; i ++ ){
 	                                                        var rects = "rect[col_index ='" + i  + "']"

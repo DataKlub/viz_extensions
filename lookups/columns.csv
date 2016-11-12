@@ -1,7 +1,3 @@
 columns,type,parent
-Col1.1,sub,Col1
-Col1.2,sub,Col1
-Col2.1,sub,Col2
-Col2.2,sub,Col2
-Col2.3,sub,Col2
-Col3.1,sub,Col3
+Planning,sub,In Progress
+Production,sub,In Progress
