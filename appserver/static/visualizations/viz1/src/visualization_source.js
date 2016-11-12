@@ -72,30 +72,21 @@ define([
                         var yValues = [];
 
                         var countData = {};
-                        
                         var cols = {}
-
-                        var  col_total_count = {}
-
                         _.each(data.rows, function(row) {
                   
-                        var row_name = row[array_fields.indexOf("rows")]
+                        var name = row[array_fields.indexOf("rows")]
 
                         var category = currentCategory++;
 
                         var count = parseInt(row[array_fields.indexOf("count")],10);
 
                         var xValue = row[array_fields.indexOf("columns")]
-
-                        col_total_count[xValue] = col_total_count[xValue] || {count : 0};
-                        col_total_count[xValue]['count'] += count;
-
                         xValues.push(xValue);
-                        yValues.push(row_name);
-                        countData[row_name] = countData[row_name] || {total: 0, row_name: row_name, counts: [], category: row_name};
-                        countData[row_name]['total'] += count;
-                        countData[row_name]['counts'].push([xValue, count]);
-
+                        yValues.push(name);
+                        countData[name] = countData[name] || {total: 0, name: name, counts: [], category: name};
+                        countData[name]['total'] += count;
+                        countData[name]['counts'].push([xValue, count]);
 
                         var col_type = row [ array_fields.indexOf("col_type") ]
                         if (col_type=="sub") {
@@ -119,13 +110,13 @@ define([
 
                         var all_phases = _.uniq(xValues);
                         for (var ii=0 ; ii<yValues.length; ii++){
-                                row_name = yValues[ii]
-                                countData[row_name] = countData[row_name] || {total: 0, row_name: row_name, counts: [], category: row_name};
+                                name = yValues[ii]
+                                countData[name] = countData[name] || {total: 0, name: name, counts: [], category: name};
                                 
                                 var tmp_phases= []
 
-                                for(var i=0; i < countData[row_name]["counts"].length;i++) {
-                                            phase = countData[row_name]["counts"][i][0];
+                                for(var i=0; i < countData[name]["counts"].length;i++) {
+                                            phase = countData[name]["counts"][i][0];
                                             tmp_phases.push(phase)
                                 } 
                                          for(var jj=0; jj < all_phases.length;jj++)  {
@@ -133,22 +124,13 @@ define([
                                                        
                                                          if (tmp_phases.indexOf(tmp_phase)<0)
                                                          {
-                                                                    countData[row_name]["counts"].push([tmp_phase,"0"])
+                                                                    countData[name]["counts"].push([tmp_phase,"0"])
                                                          }
 
                                             }
 
 
                         }
-
-                        countData["total"] = {total: 0, row_name: "total", counts: [], category: "total"};
-                        for ( var i = 0 ; i < _.keys(col_total_count).length ; i ++ ){
-                                    var tmp_col_name = _.keys(col_total_count)[i]
-                                    var tmp_col_count = col_total_count[tmp_col_name]["count"]
-                                    countData["total"]["counts"].push([tmp_col_name,tmp_col_count])
-
-                        }
-
                         var cols_inverse = {}
                         for (var i = 0 ; i < Labels.length; i ++ ){
                             
@@ -169,7 +151,7 @@ define([
                         xValues = xLabels //_.uniq(xValues);
                         if(xValues.length < 3 || yValues.length < 2){
                             throw new SplunkVisualizationBase.VisualizationError(
-                                'No data found. Please check if these are fields named "columns","rows" and "count" in splunk outputs.'
+                                'This viz only supports tables whose dimensions  greater than 3x3'
                             );
                         }
                         var metadata = {xValues: xValues};
@@ -182,7 +164,7 @@ define([
                        if (!data.countData.length) {
                                     return;
                         }
-
+                        console.log(data)
                         //sort xValues col1 sub-cols col2 sub-cols2
                         var cols = data.cols
                         var cols_inverse = data.cols_inverse
@@ -220,11 +202,17 @@ define([
                         //Colors
                         var colorScale = d3.scale.category20();
                         var cos_color= [];
-                        
-                        cos_color.push(config[this.getPropertyNamespaceInfo().propertyNamespace + "Color1"] ||'#FFCCCC');
-                        cos_color.push(config[this.getPropertyNamespaceInfo().propertyNamespace + "Color2"] ||'#DED9D9');
-                        cos_color.push(config[this.getPropertyNamespaceInfo().propertyNamespace + "Color3"] ||'#B2AFAF');
-                        cos_color.push(config[this.getPropertyNamespaceInfo().propertyNamespace + "Color4"] ||'#7C7A7A');
+                        var color1 = config[this.getPropertyNamespaceInfo().propertyNamespace + "Color1"] ||'#FFCCCC' ;
+                        var color2 = config[this.getPropertyNamespaceInfo().propertyNamespace + "Color2"] ||'#DED9D9' ;
+                        var color3 = config[this.getPropertyNamespaceInfo().propertyNamespace + "Color3"] ||'#B2AFAF' ;
+                        var color4 = config[this.getPropertyNamespaceInfo().propertyNamespace + "Color4"] ||'#7C7A7A' ;
+                        var color5 = config[this.getPropertyNamespaceInfo().propertyNamespace + "Color5"] ||'#000000' ;
+
+                        cos_color.push(color1);
+                        cos_color.push(color2);
+                        cos_color.push(color3);
+                        cos_color.push(color4);
+                        cos_color.push(color5);
 
 
                         var xValues = data.metadata.xValues;
@@ -326,7 +314,17 @@ define([
                        
 
                         var rect_color =config[this.getPropertyNamespaceInfo().propertyNamespace + "fondColor"] ||'grey' ;
-
+                        /*
+                        var in_rect= g.insert("rect", ":first-child")
+                                    .attr('id','rect_fond')
+                                    .attr("y",10)
+                                    .attr("x", MARGIN_RECT_LEFT + RECT_WIDTH_L + 10)
+                                    .attr("width", xScale(xValues[xLength-1]) - RECT_WIDTH_L - 20)
+                                    .attr("height",ROW_HEIGHT * data.countData.length + 50)
+                                    .style("fill",rect_color)
+                                    .style("opacity", .1)    
+                                    .style("stroke", "black");
+*/
                         var x_title = config[this.getPropertyNamespaceInfo().propertyNamespace + "x_title"] ||'X_Title'
 
                         var x_axis_title = g.append('text')
@@ -350,28 +348,22 @@ define([
                             .attr('col_index', function(d,i) {return i;})
                            .attr('class', function(d, i) {
                                                 if ( list_sub.indexOf(d)> -1)  
-                                                        return "sub-" + cols_inverse[d] ;
-                                                return d;})
+                                                        return "sub-" + String(cols_inverse[d]).replace(/\s+/g,'_');
+                                                return String(d).replace(/\s+/g,'_');})
                             .text(function(d,i) { return d})
                             .attr("text-anchor", "middle")
                             .attr('title', function(d) { return d; })
                             .style('fill', "black") 
                             .style("font-size", case_font_size / 2 -4);  
 
-                        var show_total =  parseInt( config[this.getPropertyNamespaceInfo().propertyNamespace + "show_total"] ||'1' ,10);
-
-                        for (var j = 0; j < data.countData.length  ; j++) {
-
-
+                        for (var j = 0; j < data.countData.length; j++) {
                                     tmp_j=j;
-
                                     var last_row = data.countData.length - 1
 
                                     if (j== last_row){
                                                 tmp_j= j*1.05 ;
                                     }
 
-                                    if ( !show_total &&  j == data.countData.length -1 )    continue; 
 
                                     var row = data.countData[j];
                                     
@@ -385,7 +377,7 @@ define([
                                                 .data(row['counts'])
                                                 .enter()
                                                 .append('rect')
-                                                .attr("class", function(d) { return d[0]; });
+                                                .attr("class", function(d) { return String(d[0]).replace(/\s+/g,'_'); });
 
 
                                     // Add text
@@ -401,8 +393,8 @@ define([
                                                 .attr('class2', function(d) { return d[0]+'_value'; })
                                                 .attr('class', function(d, i) {
                                                         if ( list_sub.indexOf(d[0])> -1)  
-                                                                return "sub-" + cols_inverse[d[0]] ;
-                                                        return d[0];})
+                                                                return "sub-" + String(cols_inverse[d[0]]).replace(/\s+/g,'_') ;
+                                                        return String(d[0]).replace(/\s+/g,'_');})
                                                 .attr('col_index', function(d) {return xValues.indexOf(d[0]);})
                                                 .attr("col", function(d){return d[0]})
                                                 .text(roundToThousands)
@@ -443,12 +435,12 @@ define([
                                         .attr("col", function(d){return d[0]})
                                         .attr('class', function(d, i) {
                                                 if ( list_sub.indexOf(d[0])> -1)  
-                                                        return "sub-" + cols_inverse[d[0]] ;
-                                                return d[0];})
+                                                        return "sub-" + String(cols_inverse[d[0]]).replace(/\s+/g,'_');
+                                                return String(d[0]).replace(/\s+/g,'_');})
                                         .attr('rect_name',function(d) { return String(d[0]+j).replace(/\s+/g,'_'); })
-                                        .style('fill', cos_color[j]||"#7C7A7A") 
+                                        .style('fill', cos_color[j]) 
                                         .style("opacity", function(d) {var newOpacity   = list_sub.indexOf(d[0])> -1 ? 0.2 : 1; return newOpacity;})   
-                                        .style("stroke", cos_color[j]||"#7C7A7A")
+                                        .style("stroke", cos_color[j])
                                         .attr("stroke-width",function(d){ return 0.5;})
                                         .style("cursor", function(d) {  if ( list_sub.indexOf(d[0])> -1 || cols[d[0]]["sub"].length == 0.)  return "auto"; return "pointer";})
                                         .attr("active", 1)
@@ -468,10 +460,7 @@ define([
                                     }
 
                            
-                                    if ( j == last_row ){
-                                        rects
-                                            .style('fill', "black") ;
-
+                                    if ( j >= 4 ){
                                         text
                                             .style('fill', "white") ;
                                     }
@@ -494,7 +483,7 @@ define([
                                             .attr('x',MARGIN_RECT_LEFT - 170*scale)
                                             .attr('width', 30* scale)
                                             .attr('height',30* scale)
-                                            .style("fill", cos_color[j]||"#7C7A7A");
+                                            .style("fill", cos_color[j]);
                                     } 
 
                                     g.append('text')
@@ -538,10 +527,10 @@ define([
                                         .attr('x', function () { if ( j ==last_row ) return MARGIN_RECT_LEFT - 130*scale ; return MARGIN_RECT_LEFT - 160*scale ;})
                                         .attr("text-anchor","mid")
                                         .attr('class', 'label')
-                                        .text((row['row_name']))
+                                        .text((row['name']))
                                         .style("font-size",function () { if ( j == last_row )  return 18*scale; return 14*scale;})
                                         .style("font-weight",function () { if ( j == last_row )  return "bold"; return "none";})
-                                        .style('fill',cos_color[j]||"#7C7A7A");
+                                        .style('fill',cos_color[j]);
 
 
                                         var g_dash = graph.insert('g',":first-child")
@@ -563,7 +552,7 @@ define([
 
                                                 })
                                                 .attr('col_index', function(d) {return xValues.indexOf(d);})
-                                                .attr('class', function(d, i) {return "sub-" + d;})
+                                                .attr('class', function(d, i) {return "sub-" + String(d).replace(/\s+/g,'_');})
                                                 .attr('height', function () { if ( j == last_row ) return RECT_HEIGHT_XL ; return RECT_HEIGHT_L; })
                                                 .style("fill",'#FFF')
                                                 .attr("class2","dash")
@@ -573,6 +562,7 @@ define([
                                                   
 
                         }
+
 
                         var line_x_arrow = g.append("line") 
                                     .attr("x1", MARGIN_RECT_LEFT)
@@ -601,7 +591,7 @@ define([
                                 .style("font-size", 18*scale)
                                 .attr("transform", "rotate(-90)");
 
-                        if( show_total) {
+
                         var line_x_bottom = g.append("line") 
                                     .attr("x1",MARGIN_RECT_LEFT)
                                     .attr("y1",  tmp_j  * ROW_HEIGHT + MARGIN_RECT_TOP - 20*scale) 
@@ -609,14 +599,14 @@ define([
                                     .attr("y2",  tmp_j * ROW_HEIGHT + MARGIN_RECT_TOP - 20*scale ) 
                                     .attr("stroke","black") 
                                     .attr("stroke-width",2);
-                           
+                                   
                         var fleche = g.append("line") 
                                     .attr("x1",MARGIN_RECT_LEFT - 35 * scale) .attr("y1",tmp_j * ROW_HEIGHT + MARGIN_RECT_TOP + RECT_HEIGHT_L/2 + 5*scale) 
                                     .attr("x2",MARGIN_RECT_LEFT - 35 * scale) .attr("y2",tmp_j * ROW_HEIGHT + MARGIN_RECT_TOP + RECT_HEIGHT_L/2 + 5*scale) 
                                     .attr("stroke","black") 
                                     .attr("stroke-width",3* scale)
                                     .attr("marker-start","url(#arrow)");
-                        }   
+
                         svg.attr("height",(tmp_j + 1)* ROW_HEIGHT + MARGIN_RECT_TOP + 40*scale);
                         svg.attr("width",   MARGIN_RECT_LEFT + X_RANGE_MAX + RECT_WIDTH_L * 2);
 
@@ -624,17 +614,22 @@ define([
                         
                         function click(p){
                                     var element = d3.select(this)
-                                    var tmp_col  = element.attr("class");
+                                    var tmp_col  = element.attr("class").replace(/_/g,' ');
+                                    alert(tmp_col)
+
                                     if (tmp_col.indexOf("sub-") > -1)  return ;
                                     if (cols[tmp_col]["sub"].length == 0) return ;
                                     var last_sub_col = cols[tmp_col]["sub"][cols[tmp_col]["sub"].length - 1 ]
                                     var DIFF = xScale(last_sub_col) - xScale(tmp_col);
                                     var index_X = xValues.indexOf(last_sub_col) ; 
                                     var active = element.attr("active") ;
-                                    var  sub_cols=  ".sub-" + tmp_col;
+                                     alert(active)
+
+                                    var  sub_cols=  ".sub-" + String(tmp_col).replace(/\s+/g,'_');
+                                     alert(sub_cols)
 
                                     if (active == 1) {
-                                                d3.selectAll("." + tmp_col).attr("active",0);
+                                                d3.selectAll("." + String(tmp_col).replace(/\s+/g,'_')).attr("active",0);
                                                 
                                                 d3.selectAll(sub_cols).style("visibility","hidden")
 
@@ -661,7 +656,7 @@ define([
                                     else{
                                                 
                                                 d3.selectAll(sub_cols).style("visibility","visible")
-                                                d3.selectAll("." + tmp_col).attr("active",1);
+                                                d3.selectAll("." + String(tmp_col).replace(/\s+/g,'_')).attr("active",1);
                                                 
                                                 for ( var i =  index_X + 1 ; i < xValues.length; i ++ ){
                                                         var rects = "rect[col_index ='" + i  + "']"
