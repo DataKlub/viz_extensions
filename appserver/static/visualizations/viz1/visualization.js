@@ -395,8 +395,8 @@ define(["api/SplunkVisualizationBase","api/SplunkVisualizationUtils"], function(
 	                            .attr('col_index', function(d,i) {return i;})
 	                           .attr('class', function(d, i) {
 	                                                if ( list_sub.indexOf(d)> -1)  
-	                                                        return "sub-" + cols_inverse[d] ;
-	                                                return d;})
+	                                                        return "sub-" + String(cols_inverse[d]).replace(/\s+/g,'_');
+	                                                return String(d).replace(/\s+/g,'_');})
 	                            .text(function(d,i) { return d})
 	                            .attr("text-anchor", "middle")
 	                            .attr('title', function(d) { return d; })
