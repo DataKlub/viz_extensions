@@ -3,14 +3,22 @@ Backlog,Type A,1
 Backlog,Type B,12
 Backlog,Type C,3
 Backlog,Type D,6
-In Progress,Type A,15
-In Progress,Type B,16
-In Progress,Type C,40
-In Progress,Type D,46
+In Progress,Type A,33
+In Progress,Type B,26
+In Progress,Type C,56
+In Progress,Type D,62
+Initiation,Type A,3
+Initiation,Type B,2
+Initiation,Type C,1
+Initiation,Type D,4
 Planning,Type A,5
 Planning,Type B,7
 Planning,Type C,15
 Planning,Type D,20
+Development,Type A,15
+Development,Type B,8
+Development,Type C,15
+Development,Type D,12
 Production ,Type A,10
 Production ,Type B,9
 Production ,Type C,25
