@@ -3,6 +3,7 @@ Viz Extensions
 
 This app use D3js to create custom visualization that can be used in splunk.
 For now it contains only a visualization for the table data which provides a possibilty to show drilldown for subcolumns.
+Other custom visualization will be added soon.
 An exemple of project monitoring table has been integrated in this app which may give an inspiration.
 
 
