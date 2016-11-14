@@ -5,7 +5,6 @@
     <earliest>0</earliest>
     <latest></latest>
   </search>
-
   <row>
     <panel>
       <table>
@@ -26,8 +25,9 @@
         <option name="viz_extensions_100.viz1.case_font_size">34</option>
         <option name="viz_extensions_100.viz1.case_size">80</option>
         <option name="viz_extensions_100.viz1.scale">0.6</option>
-        <option name="viz_extensions_100.viz1.x_title">X Title</option>
-        <option name="viz_extensions_100.viz1.y_title">Y Title</option>
+        <option name="viz_extensions_100.viz1.show_total">1</option>
+        <option name="viz_extensions_100.viz1.x_title">Project Stage</option>
+        <option name="viz_extensions_100.viz1.y_title">Type</option>
       </viz>
     </panel>
   </row>
