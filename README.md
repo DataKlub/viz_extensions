@@ -7,7 +7,7 @@ Other custom visualization will be added soon.
 An exemple of project monitoring table has been integrated in this app which may give an inspiration.
 
 
-Input requirements
+Input requirements and visualization options
 ---------
 * for each data point, you should give at least its column/row and count, if it's a point of subcolumn, you should also add the column type and its parent column.
 
@@ -25,6 +25,12 @@ Input requirements
     
     - `col_type` if the column is a sub column of a parent, use keyword **sub**
     - `parent_col` the parent column of the sub-column
+
++ Configurable options for this visualization:
+    - `Scale` you can ajust the scale of the whole viz. 
+    - `Colors` you can change  the color of each line.
+    - `ylabel` The title of your y-axis.
+    - `xlabel` The title of your x-axis.
 
 
 Requirements
